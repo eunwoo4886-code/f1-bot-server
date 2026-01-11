@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const app = express();
 
-// Ergast 대체 미러 API (안정적)
+// Ergast 미러 API
 const API_URL = "https://api.jolpica.com/ergast/f1/current.json";
 
 app.get("/f1", async (req, res) => {
@@ -33,6 +33,7 @@ app.get("/", (req, res) => {
   res.send("F1 Bot Server is running. Use /f1");
 });
 
+// ⚠️ PORT 선언은 딱 한 번만
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("F1 proxy running"));const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("F1 proxy running on " + PORT));app.listen(PORT, () => console.log("F1 proxy running"));const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("F1 proxy running"));
