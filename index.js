@@ -2,21 +2,20 @@ const express = require("express");
 const axios = require("axios");
 const app = express();
 
-// F1 일정 JSON (공개, CORS/차단 문제 없음)
-const DATA_URL =
-  "https://raw.githubusercontent.com/sportstimes/f1/main/_db/f1.json";
+// Ergast 대체 미러 API (안정적)
+const API_URL = "https://api.jolpica.com/ergast/f1/current.json";
 
 app.get("/f1", async (req, res) => {
   try {
-    const { data } = await axios.get(DATA_URL, { timeout: 15000 });
+    const { data } = await axios.get(API_URL, { timeout: 15000 });
 
-    const races = data.races;
+    const races = data.MRData.RaceTable.Races;
     const now = new Date();
     let next = null;
 
     for (const r of races) {
-      const raceDate = new Date(r.sessions.race);
-      if (raceDate > now) {
+      const d = new Date(r.date + "T" + (r.time || "00:00:00Z"));
+      if (d > now) {
         next = r;
         break;
       }
@@ -35,4 +34,5 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("F1 proxy running"));const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("F1 proxy running"));
